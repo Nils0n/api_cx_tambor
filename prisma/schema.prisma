@@ -13,12 +13,53 @@ model product {
   price       Decimal  @db.Decimal(10, 2)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  consumptions consumptions[]
 }
 
 model table {
-  id         Int      @id @default(autoincrement())
-  name       String   @unique
-  is_ocupped Boolean  @default(false)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id              Int               @id @default(autoincrement())
+  name            String            @unique
+  is_ocupped      Boolean           @default(false)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  sales_per_table sales_per_table[]
+}
+
+model sales_per_table {
+  id        Int      @id @default(autoincrement())
+  table_id  Int
+  is_opened Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  table table @relation(fields: [table_id], references: [id])
+
+  consumptions consumptions[]
+  bill_receipt bill_receipt[]
+}
+
+model consumptions {
+  id            Int      @id @default(autoincrement())
+  sales_id      Int
+  product_id    Int
+  price_product Decimal  @db.Decimal(10, 2)
+  amount        Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  sales_per_table sales_per_table @relation(fields: [sales_id], references: [id])
+  product         product         @relation(fields: [product_id], references: [id])
+}
+
+model bill_receipt {
+  id          Int      @id @default(autoincrement())
+  sales_id    Int
+  total_price Decimal  @db.Decimal(10, 2)
+  received    Decimal  @db.Decimal(10, 2)
+  change      Decimal  @db.Decimal(10, 2)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  sales_per_table sales_per_table @relation(fields: [sales_id], references: [id])
 }
