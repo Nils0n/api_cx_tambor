@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, BadRequestException, Patch } from '@nestjs/common';
+import { Controller, Get, Post, Body, BadRequestException, Patch, Param } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -11,6 +11,17 @@ export class ProductsController {
   getProducts() {
     return this.productsService.getProducts();
   }
+
+  @Get('id')
+  async findOne(@Param() id: number) {
+    try {
+      return await this.productsService.findOne(+id);
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
+
+
 
   @Post()
   async create(@Body() createProductDto: CreateProductDto) {

@@ -53,5 +53,19 @@ export class ProductsService {
       throw new Error(error);
     }
   }
+  async findOne(id: number) {
+    try {
 
+      const product = await this.dataBaseService.product.findUnique({
+        where: {
+          id: +id
+        }
+      });
+
+      return product;
+
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }

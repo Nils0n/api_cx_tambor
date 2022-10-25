@@ -12,7 +12,7 @@ export class TablesService {
       for (let i = 0; i < 61; i++) {
         await this.databaseService.table.create({
           data: {
-            name: `mesa ${i + 1}`
+            name: `mesa-${i + 1}`
           }
         });
       }
@@ -27,6 +27,22 @@ export class TablesService {
 
       const tables = await this.databaseService.table.findMany();
       return tables;
+
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async findOne(name: string) {
+    try {
+
+      const table = await this.databaseService.table.findFirst({
+        where: {
+          name: name
+        }
+      });
+
+      return table;
 
     } catch (error) {
       throw new Error(error);
