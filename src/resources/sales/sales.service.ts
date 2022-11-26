@@ -97,7 +97,6 @@ export class SalesService {
         }
       });
 
-      console.log(consumption);
       return consumption;
 
     } catch (error) {
@@ -105,11 +104,26 @@ export class SalesService {
     }
   }
 
-  update(id: number, updateSaleDto: UpdateSaleDto) {
-    return `This action updates a #${id} sale`;
-  }
+  async getAccount(saleId: number) {
+    try {
+      const consumption = await this.databaseService.consumptions.findMany({
+        where: {
+          sales_id: +saleId
+        }
+      });
 
-  remove(id: number) {
-    return `This action removes a #${id} sale`;
+      const totalSum = consumption.reduce(
+        (previousValue, currentValue) => {
+          const totalCurrent = currentValue.amount * +currentValue.price_product;
+          return previousValue + totalCurrent;
+        }
+        , 0
+      );
+
+      return totalSum;
+
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }

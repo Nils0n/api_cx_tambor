@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { SalesService } from './sales.service';
 import { CreateSaleDto } from './dto/create-sale.dto';
-import { UpdateSaleDto } from './dto/update-sale.dto';
+// import { UpdateSaleDto } from './dto/update-sale.dto';
 
 @Controller('api/sales')
 export class SalesController {
@@ -32,13 +32,13 @@ export class SalesController {
     }
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSaleDto: UpdateSaleDto) {
-    return this.salesService.update(+id, updateSaleDto);
+  @Get('get-account/:saleId')
+  async getAccount(@Param('saleId') saleId: number) {
+    try {
+      return await this.salesService.getAccount(+saleId);
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.salesService.remove(+id);
-  }
 }
