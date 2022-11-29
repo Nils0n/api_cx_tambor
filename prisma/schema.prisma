@@ -29,7 +29,7 @@ model table {
 model sales_per_table {
   id        Int      @id @default(autoincrement())
   table_id  Int
-  is_opened Boolean  @default(true)
+  is_closed Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

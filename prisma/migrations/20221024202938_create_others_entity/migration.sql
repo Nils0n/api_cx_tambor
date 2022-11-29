@@ -2,7 +2,7 @@
 CREATE TABLE `sales_per_table` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `table_id` INTEGER NOT NULL,
-    `is_opened` BOOLEAN NOT NULL DEFAULT true,
+    `is_closed` BOOLEAN NOT NULL DEFAULT false,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
