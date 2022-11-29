@@ -3,7 +3,6 @@ import { DatabaseService } from 'src/core/database/database.service';
 import { ProductsService } from '../products/products.service';
 import { TablesService } from '../tables/tables.service';
 import { CreateSaleDto } from './dto/create-sale.dto';
-import { UpdateSaleDto } from './dto/update-sale.dto';
 
 @Injectable()
 export class SalesService {
@@ -27,7 +26,7 @@ export class SalesService {
 
       let sale = await this.databaseService.sales_per_table.findFirst({
         where: {
-          is_opened: false,
+          is_closed: false,
           AND: {
             table_id: table.id
           }
@@ -37,7 +36,7 @@ export class SalesService {
       if (!sale) {
         sale = await this.databaseService.sales_per_table.create({
           data: {
-            is_opened: false,
+            is_closed: false,
             table_id: table.id
           }
         });
@@ -82,11 +81,14 @@ export class SalesService {
           table_id: table.id,
 
           AND: {
-            is_opened: false
+            is_closed: false
           }
 
         }
       });
+
+      if (!sale) return [];
+
 
       const consumption = await this.databaseService.consumptions.findMany({
         where: {
