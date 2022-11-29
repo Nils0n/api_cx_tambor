@@ -18,10 +18,7 @@ export class SalesController {
 
   }
 
-  @Get()
-  findAll() {
-    return this.salesService.findAll();
-  }
+
 
   @Get(':name')
   async findOne(@Param('name') name: string) {
